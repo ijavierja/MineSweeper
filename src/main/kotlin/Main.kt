@@ -1,5 +1,5 @@
-package org.example
+import app.MineSweeperApp
 
 fun main() {
-    println("Hello World!")
+    MineSweeperApp.run()
 }
