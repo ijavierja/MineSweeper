@@ -32,6 +32,7 @@ class Game(private val gameConfig: GameConfig) {
     private fun showNextRound() {
         Prompts.printMinefieldHeader(firstTime = false)
     }
+
     private fun showVictory() {
         Prompts.printVictory()
     }

@@ -90,6 +90,7 @@ object Prompts {
             println()
         }
     }
+
     fun printRevealedCell(cell: Cell) {
         println("This square contains ${cell.adjacentMines} adjacent mine${if (cell.adjacentMines != 1) "s" else ""}.")
     }

@@ -6,12 +6,12 @@ class Board(
 
     private val grid: Array<Array<Cell>> = Array(gameConfig.gridSize) { Array(gameConfig.gridSize) { Cell() } }
     private var remainingSafeCells = (gameConfig.gridSize * gameConfig.gridSize) - gameConfig.numMines
+
     init {
         placeMines()
         calculateAdjacentMines()
     }
 
-    // Randomly places mines on the grid
     private fun placeMines() {
         var placedMines = 0
         while (placedMines < gameConfig.numMines) {

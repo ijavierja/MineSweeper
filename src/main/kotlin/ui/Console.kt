@@ -8,8 +8,8 @@ import utils.parseCoordinates
 object Console {
     fun getGridSizeInput(): Int {
         return InputParser.getValidatedInput(
-            promptPrinter = {Prompts.printGetGridSize()},
-            errorPrinter = {Prompts.printInvalidGridSize()},
+            promptPrinter = { Prompts.printGetGridSize() },
+            errorPrinter = { Prompts.printInvalidGridSize() },
             parser = { it.toIntOrNull()?.takeIf { n -> n in 2..26 } }
         )
     }
@@ -23,8 +23,8 @@ object Console {
 
     fun getValidUserSelection(board: Board, gameConfig: GameConfig): Pair<Int, Int> {
         return InputParser.getValidatedInput(
-            promptPrinter = {Prompts.printSelectSquare()},
-            errorPrinter = {Prompts.printInvalidSquareSelection()}
+            promptPrinter = { Prompts.printSelectSquare() },
+            errorPrinter = { Prompts.printInvalidSquareSelection() }
         ) { input ->
             if (input == "show all") {
                 board.printBoard(revealAll = true)
@@ -36,7 +36,7 @@ object Console {
 
     fun getAnyKeyGameEnd() {
         InputParser.getValidatedInput(
-            promptPrinter = {Prompts.printPlayAgain()},
+            promptPrinter = { Prompts.printPlayAgain() },
             parser = { it }
         )
     }
