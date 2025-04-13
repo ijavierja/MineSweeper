@@ -5,7 +5,7 @@ class Board(
 ) {
 
     private val grid: Array<Array<Cell>> = Array(gameConfig.gridSize) { Array(gameConfig.gridSize) { Cell() } }
-    private var unrevealed = (gameConfig.gridSize * gameConfig.gridSize) - gameConfig.numMines
+    private var remainingSafeCells = (gameConfig.gridSize * gameConfig.gridSize) - gameConfig.numMines
     init {
         placeMines()
         calculateAdjacentMines()
@@ -45,6 +45,27 @@ class Board(
         }
     }
 
+    private fun shouldReveal(row: Int, col: Int): Boolean {
+        return row in 0 until gameConfig.gridSize &&
+                col in 0 until gameConfig.gridSize &&
+                !grid[row][col].isRevealed &&
+                !grid[row][col].isMine
+    }
+
+    private fun neighborsOf(row: Int, col: Int): List<Pair<Int, Int>> {
+        val neighbors = mutableListOf<Pair<Int, Int>>()
+        for (r in (row - 1)..(row + 1)) {
+            for (c in (col - 1)..(col + 1)) {
+                if (r == row && c == col) continue
+                if (r in 0 until gameConfig.gridSize && c in 0 until gameConfig.gridSize) {
+                    neighbors.add(r to c)
+                }
+            }
+        }
+        return neighbors
+    }
+
+
     fun revealCell(row: Int, col: Int): Boolean {
         val cell = grid[row][col]
         if (cell.isRevealed) return false
@@ -60,19 +81,11 @@ class Board(
             if (current.isRevealed) continue
 
             current.isRevealed = true
-            unrevealed--
+            remainingSafeCells--
 
-            if (current.adjacentMines == 0 && !current.isMine) {
-                for (nr in (r - 1)..(r + 1)) {
-                    for (nc in (c - 1)..(c + 1)) {
-                        if (nr in 0 until gameConfig.gridSize && nc in 0 until gameConfig.gridSize && !(nr == r && nc == c)) {
-                            val neighbor = grid[nr][nc]
-                            if (!neighbor.isRevealed && !neighbor.isMine) {
-                                toReveal.add(nr to nc)
-                            }
-                        }
-                    }
-                }
+            if (current.adjacentMines == 0) {
+                neighborsOf(r, c).filter { shouldReveal(it.first, it.second) }
+                    .forEach { toReveal.add(it) }
             }
         }
 
@@ -81,7 +94,7 @@ class Board(
 
 
     fun hasWon(): Boolean {
-        return unrevealed == 0
+        return remainingSafeCells == 0
     }
 
     fun isMine(row: Int, col: Int): Boolean {
