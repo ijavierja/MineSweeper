@@ -12,6 +12,10 @@ class Board(
         calculateAdjacentMines()
     }
 
+    fun getCell(r: Int, c: Int): Cell {
+        return grid[r][c];
+    }
+
     private fun placeMines() {
         var placedMines = 0
         while (placedMines < gameConfig.numMines) {
@@ -45,26 +49,22 @@ class Board(
         }
     }
 
-    private fun shouldReveal(row: Int, col: Int): Boolean {
-        return row in 0 until gameConfig.gridSize &&
-                col in 0 until gameConfig.gridSize &&
-                !grid[row][col].isRevealed &&
-                !grid[row][col].isMine
-    }
-
     private fun neighborsOf(row: Int, col: Int): List<Pair<Int, Int>> {
         val neighbors = mutableListOf<Pair<Int, Int>>()
+
+        // Iterate through all the adjacent cells (including diagonals)
         for (r in (row - 1)..(row + 1)) {
             for (c in (col - 1)..(col + 1)) {
+                // Skip the current cell and ensure the neighbor is within bounds
                 if (r == row && c == col) continue
                 if (r in 0 until gameConfig.gridSize && c in 0 until gameConfig.gridSize) {
                     neighbors.add(r to c)
                 }
             }
         }
+
         return neighbors
     }
-
 
     fun revealCell(row: Int, col: Int): Boolean {
         val cell = grid[row][col]
@@ -84,7 +84,8 @@ class Board(
             remainingSafeCells--
 
             if (current.adjacentMines == 0) {
-                neighborsOf(r, c).filter { shouldReveal(it.first, it.second) }
+                // Directly use neighborsOf to get the valid neighbors
+                neighborsOf(r, c).filter { !grid[it.first][it.second].isRevealed && !grid[it.first][it.second].isMine }
                     .forEach { toReveal.add(it) }
             }
         }
