@@ -25,7 +25,6 @@ class Board(
         }
     }
 
-    // Calculates the number of adjacent mines for each non-mine cell
     private fun calculateAdjacentMines() {
         for (row in 0 until gameConfig.gridSize) {
             for (col in 0 until gameConfig.gridSize) {
@@ -49,7 +48,9 @@ class Board(
     fun revealCell(row: Int, col: Int): Boolean {
         val cell = grid[row][col]
         if (cell.isRevealed) return false
-        println("This square contains ${grid[row][col].adjacentMines} adjacent mines.")
+
+        Prompts.printRevealedCell(cell)
+
         val toReveal = ArrayDeque<Pair<Int, Int>>()
         toReveal.add(row to col)
 
@@ -60,7 +61,7 @@ class Board(
 
             current.isRevealed = true
             unrevealed--
-            // If it's empty (no adjacent mines), reveal neighbors
+
             if (current.adjacentMines == 0 && !current.isMine) {
                 for (nr in (r - 1)..(r + 1)) {
                     for (nc in (c - 1)..(c + 1)) {
@@ -88,22 +89,6 @@ class Board(
     }
 
     fun printBoard(revealAll: Boolean = false) {
-        print("  ")
-        for (i in 1..gameConfig.gridSize) print(" $i")
-        println()
-        for (row in 0 until gameConfig.gridSize) {
-            print("${'A' + row} ")
-            for (col in 0 until gameConfig.gridSize) {
-                val cell = grid[row][col]
-                val display = when {
-                    cell.isRevealed -> cell.adjacentMines.toString()
-                    revealAll -> cell.adjacentMines.toString()
-                    else -> "_"
-                }
-                print(" $display")
-            }
-            println()
-        }
+        Prompts.printBoard(gameConfig.gridSize, grid, revealAll)
     }
-
 }

@@ -8,31 +8,45 @@ class Game(private val gameConfig: GameConfig) {
     private val board = Board(gameConfig)
 
     fun play() {
-        Prompts.printMinefieldHeader(firstTime = true)
+        showInitialMinefield()
         board.printBoard()
 
         while (true) {
             val (row, col) = Console.getValidUserSelection(board, gameConfig)
 
-            if (board.isMine(row, col)) {
-                Prompts.printGameOver()
-                return
-            }
-
-            board.revealCell(row, col)
-
+            if (handleMineHit(row, col)) return
             if (board.hasWon()) {
-                Prompts.printVictory()
+                showVictory()
                 return
             }
 
-            Prompts.printMinefieldHeader(firstTime = false)
+            showNextRound()
             board.printBoard()
         }
+    }
+
+    private fun showInitialMinefield() {
+        Prompts.printMinefieldHeader(firstTime = true)
+    }
+
+    private fun showNextRound() {
+        Prompts.printMinefieldHeader(firstTime = false)
+    }
+    private fun showVictory() {
+        Prompts.printVictory()
+    }
+
+    private fun handleMineHit(row: Int, col: Int): Boolean {
+        if (board.isMine(row, col)) {
+            Prompts.printGameOver()
+            return true
+        }
+        board.revealCell(row, col)
+        return false
     }
 
     fun end() {
         Console.getAnyKeyGameEnd()
     }
-
 }
+

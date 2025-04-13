@@ -1,3 +1,7 @@
+import domain.Board
+import domain.Cell
+import domain.GameConfig
+
 object Prompts {
 
     fun printWelcome() {
@@ -65,5 +69,27 @@ object Prompts {
 
     fun printErrorDefault() {
         println("Invalid input.")
+    }
+
+    fun printBoard(gridSize: Int, grid: Array<Array<Cell>>, revealAll: Boolean = false) {
+        print("  ")
+        for (i in 1..gridSize) print(" $i")
+        println()
+        for (row in 0 until gridSize) {
+            print("${'A' + row} ")
+            for (col in 0 until gridSize) {
+                val cell = grid[row][col]
+                val display = when {
+                    cell.isRevealed -> cell.adjacentMines.toString()
+                    revealAll -> cell.adjacentMines.toString()
+                    else -> "_"
+                }
+                print(" $display")
+            }
+            println()
+        }
+    }
+    fun printRevealedCell(cell: Cell) {
+        println("This square contains ${cell.adjacentMines} adjacent mine${if (cell.adjacentMines != 1) "s" else ""}.")
     }
 }
