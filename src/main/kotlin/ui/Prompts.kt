@@ -19,6 +19,7 @@ object Prompts {
             During the game:
             - A1, B3, etc.     -> Reveal a cell at the specified position
             - show all         -> Show the location of the mines
+            
             """.trimIndent()
         )
     }
