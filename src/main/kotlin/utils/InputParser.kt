@@ -1,4 +1,4 @@
-package input
+package utils
 
 import exceptions.ExitGameException
 import exceptions.HelpCalledException
@@ -26,24 +26,23 @@ object InputParser {
     }
 
     fun <T> getValidatedInput(
-        prompt: String,
-        errorMessage: String = "Invalid input.",
+        promptPrinter: () -> Unit,
+        errorPrinter: () -> Unit = { Prompts.printErrorDefault() },
         parser: (String) -> T?
     ): T {
         while (true) {
-            println(prompt)
+            promptPrinter()
             try {
                 val input = getInput()
                 val result = parser(input)
                 if (result != null) return result
-                println(errorMessage)
+                errorPrinter()
             } catch (e: HelpCalledException) {
-                Messages.printHelp()
+                Prompts.printHelp()
                 continue
             }
         }
     }
-
 }
 
 

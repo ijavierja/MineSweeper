@@ -8,7 +8,7 @@ import exceptions.RestartGameException
 class MineSweeperApp {
     companion object {
         fun run() {
-            Messages.printWelcome()
+            Prompts.printWelcome()
             runGameLoop()
         }
 
@@ -20,10 +20,10 @@ class MineSweeperApp {
                     game.play()
                     game.end()
                 } catch (e: ExitGameException) {
-                    Messages.printExitMessage()
+                    Prompts.printExitMessage()
                     break
                 } catch (e: RestartGameException) {
-                    Messages.printRestartMessage()
+                    Prompts.printRestartMessage()
                 }
             }
         }

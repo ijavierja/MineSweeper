@@ -1,12 +1,11 @@
 package domain
 
 class Board(
-    private val size: Int,
-    private val numMines: Int
+    private val gameConfig: GameConfig
 ) {
 
-    private val grid: Array<Array<Cell>> = Array(size) { Array(size) { Cell() } }
-    private var unrevealed = (size * size) - numMines;
+    private val grid: Array<Array<Cell>> = Array(gameConfig.gridSize) { Array(gameConfig.gridSize) { Cell() } }
+    private var unrevealed = (gameConfig.gridSize * gameConfig.gridSize) - gameConfig.numMines
     init {
         placeMines()
         calculateAdjacentMines()
@@ -15,9 +14,9 @@ class Board(
     // Randomly places mines on the grid
     private fun placeMines() {
         var placedMines = 0
-        while (placedMines < numMines) {
-            val row = (0 until size).random()
-            val col = (0 until size).random()
+        while (placedMines < gameConfig.numMines) {
+            val row = (0 until gameConfig.gridSize).random()
+            val col = (0 until gameConfig.gridSize).random()
 
             if (!grid[row][col].isMine) {
                 grid[row][col].isMine = true
@@ -28,15 +27,15 @@ class Board(
 
     // Calculates the number of adjacent mines for each non-mine cell
     private fun calculateAdjacentMines() {
-        for (row in 0 until size) {
-            for (col in 0 until size) {
+        for (row in 0 until gameConfig.gridSize) {
+            for (col in 0 until gameConfig.gridSize) {
                 if (grid[row][col].isMine) continue
                 var adjacentMines = 0
 
                 // Check all neighboring cells
                 for (r in (row - 1)..(row + 1)) {
                     for (c in (col - 1)..(col + 1)) {
-                        if (r in 0 until size && c in 0 until size && grid[r][c].isMine) {
+                        if (r in 0 until gameConfig.gridSize && c in 0 until gameConfig.gridSize && grid[r][c].isMine) {
                             adjacentMines++
                         }
                     }
@@ -65,7 +64,7 @@ class Board(
             if (current.adjacentMines == 0 && !current.isMine) {
                 for (nr in (r - 1)..(r + 1)) {
                     for (nc in (c - 1)..(c + 1)) {
-                        if (nr in 0 until size && nc in 0 until size && !(nr == r && nc == c)) {
+                        if (nr in 0 until gameConfig.gridSize && nc in 0 until gameConfig.gridSize && !(nr == r && nc == c)) {
                             val neighbor = grid[nr][nc]
                             if (!neighbor.isRevealed && !neighbor.isMine) {
                                 toReveal.add(nr to nc)
@@ -90,11 +89,11 @@ class Board(
 
     fun printBoard(revealAll: Boolean = false) {
         print("  ")
-        for (i in 1..size) print(" $i")
+        for (i in 1..gameConfig.gridSize) print(" $i")
         println()
-        for (row in 0 until size) {
+        for (row in 0 until gameConfig.gridSize) {
             print("${'A' + row} ")
-            for (col in 0 until size) {
+            for (col in 0 until gameConfig.gridSize) {
                 val cell = grid[row][col]
                 val display = when {
                     cell.isRevealed -> cell.adjacentMines.toString()

@@ -1,4 +1,5 @@
-object Messages {
+object Prompts {
+
     fun printWelcome() {
         println("Welcome to Minesweeper!")
         println("Type \"help\" for list of commands")
@@ -36,5 +37,33 @@ object Messages {
 
     fun printVictory() {
         println("Congratulations, you have won the game!")
+    }
+
+    fun printGetGridSize() {
+        println("Enter the size of the grid (e.g. 4 for a 4x4 grid):")
+    }
+
+    fun printInvalidGridSize() {
+        println("Invalid input. Min is 2; Max is 26.")
+    }
+
+    fun printGetNumMines(maxMines: Int) {
+        println("Enter the number of mines to place on the grid (maximum is $maxMines):")
+    }
+
+    fun printPlayAgain() {
+        println("Press any key to play again...")
+    }
+
+    fun printSelectSquare() {
+        println("Select a square to reveal (e.g. A1):")
+    }
+
+    fun printInvalidSquareSelection() {
+        println("Invalid input. Please enter a valid square (e.g. A1).")
+    }
+
+    fun printErrorDefault() {
+        println("Invalid input.")
     }
 }
