@@ -15,7 +15,7 @@ class MineSweeperApp {
         private fun runGameLoop() {
             while (true) {
                 try {
-                    val gameConfig = GameConfig()
+                    val gameConfig = GameConfig.fromConsole()
                     val game = Game(gameConfig)
                     game.play()
                     game.end()
