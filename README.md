@@ -30,7 +30,7 @@ The game follows an object-oriented approach with these key components:
 
 ### Pre-requisites
 - Java 8 or later
-### 1. Extract the ZIP File
+### 1. Clone the repository and navigate into the project directory
 
 ### 2.Build the project
 
