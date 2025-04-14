@@ -47,12 +47,12 @@ gradlew.bat build
 
 Linux/macOS:
 ```
-./gradlew run
+./gradlew run --console=plain
 ```
 
 For Windows:
 ```
-gradlew.bat run
+gradlew.bat run --console=plain
 ```
 
 ## How to Run Tests

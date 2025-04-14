@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.10"
+    application
 }
 
 group = "org.example"
@@ -18,4 +19,10 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(22)
+}
+application {
+    mainClass.set("MainKt") // Note the `Kt` suffix
+}
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`  // 👈 Enable interactive input
 }
